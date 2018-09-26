@@ -23,7 +23,7 @@ module.exports = {
     return query
       .insert(body)
       .into('notes')
-      .then(id => id);
+      .then(([id]) => ({ id, ...body }));
   },
 
   editNote: function(id, body) {
@@ -32,7 +32,7 @@ module.exports = {
     return query
       .where(id)
       .update(body)
-      .then(body => body);
+      .then(_ => this.getNotes(id));
   },
 
   deleteNote: function(id) {
@@ -41,6 +41,6 @@ module.exports = {
     return query
       .where(id)
       .del()
-      .then(count => count);
+      .then(_ => this.getNotes());
   },
 };
